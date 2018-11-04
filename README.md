@@ -1,12 +1,13 @@
 # ArmyAirForce
-Performs analysis of play-by-play data from Army Air Force 2018.  Intended to demonstrate regression models in introductory statistics courses.
+Performs analysis of play-by-play data from the Army - Air Force 2018 football game.  Intended to demonstrate regression models in introductory statistics courses.
 
-Go to https://drive.google.com/drive/folders/0B13YvT1olZIfZ0NKaEZDdGt3TDQ to download play-by-play data from every college football game.  I used the csv file located in the 2018 folder. Thanks to
+I obtained the data from www.reddit.com (user: BlueSCar).  For additional data, see this post (https://www.reddit.com/r/CFBAnalysis/comments/6wz5ww/2017_play_by_play_data/) 
 
 ##Load libraries and data
 ```
 library(tidyverse)
-plays <- read_csv
+plays <- read_csv(file = "College Football play-by-play.R")
+head(plays)
 ```
 
 
