@@ -2,21 +2,99 @@
 output: rmarkdown::github_document
 ---
 
-# ArmyAirForce
-Performs analysis of play-by-play data from the Army - Air Force 2018 football game.  Intended to demonstrate regression models in introductory statistics courses.
+# Army vs. Air Force 2018 - Can we predict the number of yards Army gained each play on offense?
+This code performs analysis of play-by-play data from the Army - Air Force 2018 football game.  Intended to demonstrate regression models in introductory statistics courses.
 
-I obtained the data from www.reddit.com (user: BlueSCar).  For additional data, see this post (https://www.reddit.com/r/CFBAnalysis/comments/6wz5ww/2017_play_by_play_data/). 
+The file "PBP - 2018 - Week 10.csv" contains play-by-play data for every college football game up to Week 10.  The data is available from user BlueSCar at https://www.reddit.com/r/CFBAnalysis/comments/6wz5ww/2017_play_by_play_data/. 
 
 ## Load libraries and data
-
-```{r}
+```{r, message = FALSE}
 library(tidyverse)
 plays <- read_csv(file = "PBP - 2018 - Week 10.csv")
-head(plays)
+View(plays)
 ```
 
-
 ## Data Cleaning
+```{r, message = FALSE}
+# First, we will filter out other games.
+plays <- plays %>% filter(homeTeam == "Army")
 
+# Next, filter out punts, kickoffs, penalties, etc. 
+unique(plays$type)
+plays_RushAndPass <- plays %>% 
+  filter(type %in% c("Rush","Pass Reception",
+                     "Rushing Touchdown",
+                     "Pass Incompletion")) 
+```
 
+## Data Analysis
+```{r, message=FALSE}
+#Yards by quarter
+plays_RushAndPass %>% 
+  ggplot(aes(x = factor(quarter), y = yardsGained, color = offenseTeam)) +
+  geom_boxplot() + ggtitle("Yards Gained by quarter")
+
+#Yards by down
+plays_RushAndPass %>% ggplot(aes(x = factor(down), y = yardsGained, color = offenseTeam)) +
+  geom_boxplot()
+
+plays_RushAndPass %>% group_by(quarter, offenseTeam) %>% 
+  summarise(averageYards = mean(yardsGained),
+            totalYards = sum(yardsGained), 
+            n = n())
+```
+
+## Question: Does Army gain more yards when they have farther to go for a first down?
+
+In this case, our response variable is yards gained and predictor is number of yards to go for a first down.
+
+### Some plots
+```{r, message = FALSE}
+# filter out when Army is on offense
+plays_Army <- plays_RushAndPass %>% filter(offenseTeam == "Army") 
+
+plays_Army %>% ggplot(aes(x = distance, y = yardsGained)) + 
+  geom_point() + geom_smooth(method = "lm") + ggtitle("yards gained vs. distance to go")
+```
+
+Some questions to consider:
+* Is a linear model appropriate?
+* Are there any outliers?
+* What does a slope of zero mean?
+
+### Fit a linear model 
+```{r}
+model_distance <- lm(yardsGained ~ distance, 
+                 data = plays_Army)
+summary(model_distance)
+```
+
+Some questions:
+* How do we interpret the distance coefficient? Intercept?
+* Is this result statistically significant? What does that mean?
+* What does the residual standard error mean?
+* What does this model tell us?
+
+## Perhaps, we can learn more about yards gained by including other information.
+
+Let's see what happens when we include what down it is.
+
+### Some plots
+```{r}
+plays_Army %>% ggplot(aes(x = factor(down), y = yardsGained)) +
+  geom_boxplot()
+```
+
+### Fit a model including down
+```{r}
+model_distance_down <- lm(yardsGained ~ distance + factor(down), 
+                          data = plays_Army)
+summary(model_distance_down)
+```
+
+Some questions:
+* How do we interpret the coefficients in this model?
+* How would the model change if we did not put factor() around downs in the linear model?
+* The distance coefficient changed a lot from the simple model.  What are some explanations for that?
+* What happened to the residual standard error? 
 
