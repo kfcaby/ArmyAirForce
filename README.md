@@ -47,7 +47,7 @@ Data Analysis
 #Yards by quarter
 plays_RushAndPass %>% 
   ggplot(aes(x = factor(quarter), y = yardsGained, color = offenseTeam)) +
-  geom_boxplot() + ggtitle("Yards Gained by quarter")
+  geom_boxplot() + ggtitle("Yards gained by quarter")
 ```
 
 ![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-1.png)
@@ -55,7 +55,7 @@ plays_RushAndPass %>%
 ``` r
 #Yards by down
 plays_RushAndPass %>% ggplot(aes(x = factor(down), y = yardsGained, color = offenseTeam)) +
-  geom_boxplot()
+  geom_boxplot() + ggtitle("Yards gained by down")
 ```
 
 ![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-2.png)
@@ -83,12 +83,12 @@ plays_RushAndPass %>% group_by(quarter, offenseTeam) %>%
 Question: Does Army gain more yards when they have farther to go for a first down?
 ----------------------------------------------------------------------------------
 
-In this case, our response variable is yards gained and predictor is number of yards to go for a first down.
+In this case, our response variable is yards gained and the predictor is number of yards to go for a first down.
 
 ### Some plots
 
 ``` r
-# filter out when Army is on offense
+# filter out when Army is on defense
 plays_Army <- plays_RushAndPass %>% filter(offenseTeam == "Army") 
 
 plays_Army %>% ggplot(aes(x = distance, y = yardsGained)) + 
@@ -97,7 +97,11 @@ plays_Army %>% ggplot(aes(x = distance, y = yardsGained)) +
 
 ![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-4-1.png)
 
-Some questions to consider: \* Is a linear model appropriate? \* Are there any outliers? \* What does a slope of zero mean?
+Some questions to consider:
+
+-   Is a linear model appropriate?
+-   Are there any outliers?
+-   What does a slope of zero mean?
 
 ### Fit a linear model
 
@@ -126,7 +130,12 @@ summary(model_distance)
     ## Multiple R-squared:  0.002812,   Adjusted R-squared:  -0.01409 
     ## F-statistic: 0.1664 on 1 and 59 DF,  p-value: 0.6848
 
-Some questions: \* How do we interpret the distance coefficient? Intercept? \* Is this result statistically significant? What does that mean? \* What does the residual standard error mean? \* What does this model tell us?
+Some questions:
+
+-   How do we interpret the distance coefficient? Intercept?
+-   Is this result statistically significant? What does that mean?
+-   What does the residual standard error mean?
+-   What does this model tell us?
 
 Perhaps, we can learn more about yards gained by including other information.
 -----------------------------------------------------------------------------
@@ -172,4 +181,9 @@ summary(model_distance_down)
     ## Multiple R-squared:  0.354,  Adjusted R-squared:  0.3079 
     ## F-statistic: 7.672 on 4 and 56 DF,  p-value: 5.302e-05
 
-Some questions: \* How do we interpret the coefficients in this model? \* How would the model change if we did not put factor() around downs in the linear model? \* The distance coefficient changed a lot from the simple model. What are some explanations for that? \* What happened to the residual standard error?
+Some questions:
+
+-   How do we interpret the coefficients in this model?
+-   How would the model change if we did not put factor() around downs in the linear model?
+-   The distance coefficient changed a lot from the simple model. What are some explanations for that?
+-   What happened to the residual standard error?
