@@ -7,7 +7,7 @@ I obtained the data from www.reddit.com (user: BlueSCar).  For additional data, 
 
 ```{r}
 library(tidyverse)
-plays <- read_csv(file = "College Football play-by-play.R")
+plays <- read_csv(file = "PBP - 2018 - Week 10.csv")
 head(plays)
 ```
 
