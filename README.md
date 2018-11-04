@@ -1,6 +1,9 @@
 
-Army vs. Air Force 2018 - Can we predict the number of yards Army gained each play on offense?
-==============================================================================================
+Army 17, Air Force 14
+=====================
+
+Can we predict the number of yards Army gained each play on offense?
+====================================================================
 
 This code performs analysis of play-by-play data from the Army - Air Force 2018 football game. Intended to demonstrate regression models in introductory statistics courses.
 
@@ -47,7 +50,7 @@ Data Analysis
 #Yards by quarter
 plays_RushAndPass %>% 
   ggplot(aes(x = factor(quarter), y = yardsGained, color = offenseTeam)) +
-  geom_boxplot() + ggtitle("Yards gained by quarter")
+  geom_boxplot() + ggtitle("Yards gained from scrimmage each play by quarter")
 ```
 
 ![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-1.png)
@@ -55,7 +58,7 @@ plays_RushAndPass %>%
 ``` r
 #Yards by down
 plays_RushAndPass %>% ggplot(aes(x = factor(down), y = yardsGained, color = offenseTeam)) +
-  geom_boxplot() + ggtitle("Yards gained by down")
+  geom_boxplot() + ggtitle("Yards gained from scrimmage each play by down")
 ```
 
 ![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-2.png)
